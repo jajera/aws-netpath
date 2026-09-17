@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.33.5
 	github.com/aws/aws-sdk-go-v2/credentials v1.20.5
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.326.0
-	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.70.0
+	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.72.0
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.76.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
 	github.com/modelcontextprotocol/go-sdk v1.8.0
