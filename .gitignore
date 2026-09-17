@@ -1,0 +1,59 @@
+# Build output
+/bin/
+/dist/
+/aws-netpath
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/vendor/
+
+# Collected snapshots are models of a real network. They are excluded by policy,
+# not by redaction: nothing in this tool attempts to sanitise a snapshot, so a
+# snapshot must never be committed. Fixtures under testdata/ are hand-written
+# and use documentation ranges only, so they stay tracked.
+/snapshot.json
+/snapshot-*.json
+snapshot*.json
+
+# The name patterns above only catch files called snapshot*.json, so
+# `collect -output prod-net.json` still leaves a committable snapshot behind. A
+# dedicated directory is harder to get wrong: write snapshots under snapshots/
+# and the name no longer matters.
+/snapshots/
+
+!internal/query/testdata/*.json
+!examples/*.json
+
+# Kiro spec execution telemetry is machine-generated per-run state: execution
+# ids, chat session ids, timestamps. It churns on every task run and conflicts
+# meaninglessly on a shared branch, and tasks.md already records the outcome.
+# The spec documents themselves — requirements.md, design.md, tasks.md,
+# .config.kiro — stay tracked.
+.kiro/specs/*/tasks.meta.json
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Credentials and local config
+.env
+*.pem
+*.key
+credentials
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store

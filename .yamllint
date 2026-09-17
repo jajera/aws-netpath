@@ -1,0 +1,31 @@
+---
+# yamllint configuration.
+#
+# Read by `yamllint -c .yamllint .` locally and by the yaml-lint caller
+# workflow, which defaults yamllint_config_filepath to this path.
+extends: default
+
+rules:
+  # GitHub Actions spells the trigger key `on`, which YAML 1.1 reads as a
+  # boolean. The key is not ours to rename, so the check is off for keys and
+  # left on for values, where a stray `yes`/`no` is still worth catching.
+  truthy:
+    check-keys: false
+
+  # Workflow files carry explanatory comments and pinned action SHAs, both of
+  # which run past 80 characters for reasons that are not formatting.
+  line-length:
+    max: 120
+
+  # The example and fixture YAML files open with a comment block explaining what
+  # the file is for, which reads better than a `---` above it. Workflow files here
+  # do carry the marker; the rule is off so both shapes are acceptable rather than
+  # one of them being a warning that a --strict run would turn into a failure.
+  document-start: disable
+
+  # Comment blocks in this repository are prose. Requiring a blank line before
+  # every one of them would break paragraphs that belong together.
+  comments:
+    require-starting-space: true
+  empty-lines:
+    max: 1

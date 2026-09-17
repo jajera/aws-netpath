@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "aws-netpath": {
+      "command": "./bin/aws-netpath",
+      "args": ["mcp"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": ["query", "firewall", "diff", "test"]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+---
+version: 2
+
+updates:
+  # Action versions are pinned by SHA in the workflows that use them, so without
+  # this ecosystem a pinned action never moves again.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  # The AWS SDK modules this tool reads the API through move constantly, and
+  # govulncheck.yml only reports a CVE — something has to raise the bump.
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly

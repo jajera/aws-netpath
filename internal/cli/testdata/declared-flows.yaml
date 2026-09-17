@@ -1,0 +1,26 @@
+# Declared flows for the same-vpc-permitted snapshot.
+#
+# Three flows, three outcomes, so a rendered report carries a finding, a cleared
+# layer set, and an abstention at once: one flow the model agrees with, one it
+# contradicts, and one whose destination no collected interface holds.
+#
+# Addresses are RFC 1918 and the account is a placeholder, per requirement 17.
+flows:
+  - name: app to database on 443
+    from: 10.0.1.10
+    to: 10.0.2.20
+    proto: tcp
+    port: 443
+    expect: permitted
+  - name: app to database on 22
+    from: 10.0.1.10
+    to: 10.0.2.20
+    proto: tcp
+    port: 22
+    expect: permitted
+  - name: app to an address no interface holds
+    from: 10.0.1.10
+    to: 10.0.2.99
+    proto: tcp
+    port: 443
+    expect: permitted

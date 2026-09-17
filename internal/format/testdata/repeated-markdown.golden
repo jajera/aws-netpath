@@ -1,0 +1,27 @@
+# diagnosis — BLOCKED at nacl
+
+- flow: 10.0.1.10/32 -> 10.12.2.30/32 tcp/443
+
+## blocking layer — nacl
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| nacl | DENY | `acl-0123456789abcdef0` | no ingress rule allows tcp/443 from 10.0.1.10 |
+
+## cleared layers
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| route | ALLOW | `rtb-0aaa1111bbbb222200` | route: 10.1.0.0/16 -> tgw-0abc1234def567890 |
+| route | ALLOW | `rtb-0aaa1111bbbb222201` | route: 10.2.0.0/16 -> tgw-0abc1234def567890 |
+| route | ALLOW | `rtb-0aaa1111bbbb222202` | route: 10.3.0.0/16 -> tgw-0abc1234def567890 |
+| route | ALLOW | `rtb-0aaa1111bbbb222203` | route: 10.4.0.0/16 -> tgw-0abc1234def567890 |
+| route | ALLOW | `rtb-0aaa1111bbbb222204` | route: 10.5.0.0/16 -> tgw-0abc1234def567890 |
+| firewall | ALLOW | `nfr-allow-east-west sid 3 (priority 6)` | PASS |
+| firewall | ALLOW | `nfr-inspect-egress sid 11 (priority 20)` | PASS |
+
+_7 of 14 rows omitted at the configured limit of 4; the text and json renderings carry all of them._
+
+## abstentions
+
+_no layer abstained._

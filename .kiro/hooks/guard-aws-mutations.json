@@ -1,0 +1,17 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Block mutating aws CLI calls",
+      "description": "Read-only by construction is a documented guarantee of this project. Refuses mutating `aws` CLI invocations from shell tools; read-only verbs pass. The project's own aws-netpath binary is never matched. Escape hatch: AWS_NETPATH_ALLOW_AWS_WRITE=1.",
+      "trigger": "PreToolUse",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "command",
+        "command": "python3 .kiro/hooks/guard-aws-mutations.py",
+        "timeout": 30
+      },
+      "enabled": true
+    }
+  ]
+}

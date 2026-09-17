@@ -1,0 +1,34 @@
+---
+# The gate that keeps this repository publishable.
+#
+# scripts/sanitise-gate.sh is the single control standing between a real account
+# identifier, credential profile name, region, or routable address range and a
+# public repository. It matters more here than in most projects because the
+# artefact this tool produces — a snapshot — is an unsanitised model of somebody's
+# real network, and nothing in the tool redacts one. A fixture pasted from a live
+# collection is indistinguishable from a hand-written one until this script looks
+# at it.
+#
+# Until now the script only ran when someone remembered to run it, which is not a
+# control. Running it on every pull request and every push to main makes it one.
+name: Sanitise Gate
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  sanitise-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      # The script scans `git ls-files`, so it needs the checkout and nothing
+      # else: no toolchain, no credentials, no network.
+      - name: Run sanitise gate
+        run: ./scripts/sanitise-gate.sh

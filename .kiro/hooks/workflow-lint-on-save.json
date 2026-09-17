@@ -1,0 +1,17 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Workflow and Lint Config Check on Save",
+      "description": "Runs actionlint on saved GitHub Actions workflows and yamllint -c .yamllint on the saved file. A broken workflow or lint config is otherwise only discovered on push. The matcher covers .github/workflows/*.yml, .github/dependabot.yml, .yamllint, and .golangci.yml; v1 does not substitute ${file}, so the script resolves its target from the STDIN payload and falls back to the git-dirty set.",
+      "trigger": "PostFileSave",
+      "matcher": "(^|/)(\\.github/(workflows/[^/]+\\.ya?ml|dependabot\\.ya?ml)|\\.yamllint|\\.golangci\\.ya?ml)$",
+      "action": {
+        "type": "command",
+        "command": "bash .kiro/hooks/workflow-lint.sh",
+        "timeout": 60
+      },
+      "enabled": true
+    }
+  ]
+}

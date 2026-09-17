@@ -1,0 +1,26 @@
+flow: 10.0.1.10/32 -> 10.2.3.40/32 tcp/443
+source: engine: PERMITTED (9 hops evaluated, none blocked)
+source: reachability analyzer: NO RESULT (cross-region (ap-southeast-2 → us-east-1): Reachability Analyzer is single-region)
+verdict: NOT CORROBORATED: AWS Reachability Analyzer did not return a result
+!! this verdict is not corroborated: AWS Reachability Analyzer did not return a result
+
+verdicts compared:
+  [PERMITTED] engine
+         9 hops evaluated, none blocked
+         cited: offline path walk  9 hops evaluated, none blocked
+  [NO RESULT] reachability analyzer
+         cross-region (ap-southeast-2 → us-east-1): Reachability Analyzer is single-region
+         cited: no analysis  cross-region (ap-southeast-2 → us-east-1): Reachability Analyzer is single-region
+  (only the engine reached a verdict, so there is nothing to compare it against)
+
+corroborated:
+  (nothing was corroborated: only one source reached a verdict)
+
+caveats:
+  [CAVEAT] analysis cost
+         Reachability Analyzer analyses are billable: each run creates a network insights path and an analysis and is charged per analysis, where the offline query over the snapshot costs nothing
+  [CAVEAT] forward direction only
+         for TCP over a transit gateway route table, Reachability Analyzer evaluates forward traffic only: this comparison says nothing about the return direction, which is where an asymmetric path fails
+  [CAVEAT] cross-region path
+         no single Reachability Analyzer run covers ap-southeast-2 to us-east-1: an analysis is scoped to one region, so no run evaluates this path end to end and two runs cannot be joined into one verdict
+  (what this comparison established is narrowed by forward direction only and cross-region path)

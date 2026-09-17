@@ -1,0 +1,12 @@
+---
+name: YAML Lint
+
+on:
+  pull_request: {}
+
+permissions:
+  contents: read
+
+jobs:
+  yaml-lint:
+    uses: actionsforge/actions/.github/workflows/yaml-lint.yml@main

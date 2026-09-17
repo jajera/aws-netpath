@@ -1,0 +1,66 @@
+{
+  "kind": "verification",
+  "flow": "10.0.1.10/32 -> 10.1.2.30/32 tcp/443",
+  "outcome": "DISAGREEMENT: model permits but AWS blocks",
+  "subjects": [
+    "engine: PERMITTED (7 hops evaluated, none blocked)",
+    "reachability analyzer: NOT REACHABLE (analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)"
+  ],
+  "finding": {
+    "title": "verdicts compared",
+    "rows": [
+      {
+        "layer": "engine",
+        "verdict": "PERMITTED",
+        "detail": "7 hops evaluated, none blocked"
+      },
+      {
+        "subject": "offline path walk",
+        "detail": "7 hops evaluated, none blocked"
+      },
+      {
+        "subject": "nfw-inspection-apse2",
+        "detail": "nfr-allow-east-west sid 3 (priority 6) PASS"
+      },
+      {
+        "layer": "reachability analyzer",
+        "verdict": "NOT REACHABLE",
+        "detail": "analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a"
+      },
+      {
+        "subject": "nia-0123456789abcdef0",
+        "detail": "analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a"
+      }
+    ],
+    "note": "the engine and the reachability analyzer disagree; both verdicts stand as reported, neither is taken as correct, and this section resolves nothing"
+  },
+  "cleared": {
+    "title": "corroborated",
+    "rows": [
+      {
+        "layer": "verdict",
+        "verdict": "DISAGREE",
+        "detail": "model permits but AWS blocks"
+      }
+    ],
+    "note": "nothing was corroborated: the two sources reached different conclusions and neither was preferred to settle it"
+  },
+  "unresolved": {
+    "title": "caveats",
+    "rows": [
+      {
+        "layer": "analysis cost",
+        "verdict": "CAVEAT",
+        "detail": "Reachability Analyzer analyses are billable: each run creates a network insights path and an analysis and is charged per analysis, where the offline query over the snapshot costs nothing"
+      },
+      {
+        "layer": "forward direction only",
+        "verdict": "CAVEAT",
+        "detail": "for TCP over a transit gateway route table, Reachability Analyzer evaluates forward traffic only: this comparison says nothing about the return direction, which is where an asymmetric path fails"
+      }
+    ],
+    "note": "what this comparison established is narrowed by forward direction only"
+  },
+  "authoritative": false,
+  "notice": "the engine and the reachability analyzer disagree: engine reports PERMITTED, reachability analyzer reports NOT REACHABLE — neither is preferred and neither is treated as correct, so the disagreement is reported rather than resolved, and one of the two is wrong about this flow"
+}

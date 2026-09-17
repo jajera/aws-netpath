@@ -1,0 +1,44 @@
+---
+# Tagged releases are built by the actionsforge go-binary-release.yml reusable,
+# which now sets CGO_ENABLED=0, builds with -trimpath -buildvcs=false, and writes
+# a SHA256SUMS over the artefacts — the three properties requirement 16.1 and the
+# reproducibility claim depend on.
+#
+# scripts/release.sh stays as the local release path and is not redundant: it
+# does two things CI does not. It asserts that `file` does not describe the ELF
+# output as dynamically linked, and it runs the host binary to confirm it reports
+# the stamp it was given. internal/cli/version_test.go pins the -X symbol path
+# against that script, so renaming Version or moving the package fails a test
+# rather than silently shipping a release labelled "dev".
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  # cgo-enabled, trimpath and checksums are left unset on purpose. Their defaults
+  # are "0", true and true, which is exactly what this project needs: statically
+  # linked, reproducible, and published with checksums. Passing them would only
+  # restate the default.
+  release:
+    uses: actionsforge/actions/.github/workflows/go-binary-release.yml@main
+    with:
+      binary-name: aws-netpath
+      package: ./cmd/aws-netpath
+      go-version: stable
+      platforms: |
+        linux/amd64
+        linux/arm64
+        darwin/amd64
+        darwin/arm64
+        windows/amd64
+      # github.ref_name is the tag on a v* push, which is the only trigger that
+      # publishes a real release. A workflow_dispatch run from a branch stamps the
+      # branch name instead, so a manual build off main reports "main".
+      ldflags: >-
+        -s -w -X github.com/jajera/aws-netpath/internal/cli.Version=${{ github.ref_name }}

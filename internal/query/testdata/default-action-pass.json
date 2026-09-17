@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-01T00:00:00Z",
+  "accounts": ["111122223333"],
+  "regions": ["us-east-1", "us-west-2"],
+  "vpcs": {
+    "vpc-prod-east": {
+      "id": "vpc-prod-east",
+      "name": "prod-vpc",
+      "region": "us-east-1",
+      "account": "111122223333",
+      "cidrs": ["10.30.32.0/19"]
+    },
+    "vpc-inspection-east": {
+      "id": "vpc-inspection-east",
+      "name": "vpc-inspection-prod-use1",
+      "region": "us-east-1",
+      "account": "111122223333",
+      "cidrs": ["10.29.17.0/24"]
+    },
+    "vpc-inspection-west": {
+      "id": "vpc-inspection-west",
+      "name": "vpc-inspection-prod-usw2",
+      "region": "us-west-2",
+      "account": "111122223333",
+      "cidrs": ["10.29.48.0/24"]
+    },
+    "vpc-edge-west": {
+      "id": "vpc-edge-west",
+      "name": "edge-vpc",
+      "region": "us-west-2",
+      "account": "444455556666",
+      "cidrs": ["10.30.192.0/20"]
+    }
+  },
+  "subnets": {
+    "subnet-prod-east-a": {
+      "id": "subnet-prod-east-a",
+      "name": "prod private AZ A",
+      "region": "us-east-1",
+      "vpc_id": "vpc-prod-east",
+      "cidr": "10.30.32.0/24",
+      "route_table_id": "rt-prod-east"
+    },
+    "subnet-inspection-east-fw": {
+      "id": "subnet-inspection-east-fw",
+      "name": "sub-firewall-prod-use1-a",
+      "region": "us-east-1",
+      "vpc_id": "vpc-inspection-east",
+      "cidr": "10.29.17.0/27",
+      "route_table_id": "rt-inspection-east-fw"
+    },
+    "subnet-inspection-west-fw": {
+      "id": "subnet-inspection-west-fw",
+      "name": "sub-firewall-prod-usw2-a",
+      "region": "us-west-2",
+      "vpc_id": "vpc-inspection-west",
+      "cidr": "10.29.48.0/27",
+      "route_table_id": "rt-inspection-west-fw"
+    }
+  },
+  "route_tables": {
+    "rt-prod-east": {
+      "id": "rt-prod-east",
+      "name": "prod-spoke-rt",
+      "region": "us-east-1",
+      "vpc_id": "vpc-prod-east",
+      "routes": [
+        { "destination": "10.30.32.0/19", "target_kind": "local", "target_id": "local" },
+        { "destination": "0.0.0.0/0", "target_kind": "transit-gateway", "target_id": "tgw-east" }
+      ]
+    },
+    "rt-inspection-east-fw": {
+      "id": "rt-inspection-east-fw",
+      "name": "rtb-firewall-use1",
+      "region": "us-east-1",
+      "vpc_id": "vpc-inspection-east",
+      "routes": [
+        { "destination": "10.29.17.0/24", "target_kind": "local", "target_id": "local" },
+        { "destination": "0.0.0.0/0", "target_kind": "transit-gateway", "target_id": "tgw-east" }
+      ]
+    },
+    "rt-inspection-west-fw": {
+      "id": "rt-inspection-west-fw",
+      "name": "rtb-firewall-usw2",
+      "region": "us-west-2",
+      "vpc_id": "vpc-inspection-west",
+      "routes": [
+        { "destination": "10.29.48.0/24", "target_kind": "local", "target_id": "local" },
+        { "destination": "0.0.0.0/0", "target_kind": "transit-gateway", "target_id": "tgw-west" }
+      ]
+    }
+  },
+  "transit_gateways": {
+    "tgw-east": {
+      "id": "tgw-east",
+      "name": "tgw-hub-prod-use1",
+      "region": "us-east-1",
+      "account": "111122223333"
+    },
+    "tgw-west": {
+      "id": "tgw-west",
+      "name": "tgw-hub-prod-usw2",
+      "region": "us-west-2",
+      "account": "111122223333"
+    }
+  },
+  "tgw_attachments": {
+    "tgw-attach-prod-east": {
+      "id": "tgw-attach-prod-east",
+      "name": "prod-vpc-attachment",
+      "region": "us-east-1",
+      "transit_gateway_id": "tgw-east",
+      "kind": "vpc",
+      "resource_id": "vpc-prod-east",
+      "state": "available"
+    },
+    "tgw-attach-inspection-east": {
+      "id": "tgw-attach-inspection-east",
+      "name": "inspection-vpc-attachment-east",
+      "region": "us-east-1",
+      "transit_gateway_id": "tgw-east",
+      "kind": "vpc",
+      "resource_id": "vpc-inspection-east",
+      "state": "available"
+    },
+    "tgw-attach-peering-west": {
+      "id": "tgw-attach-peering-west",
+      "name": "peering-to-west",
+      "region": "us-east-1",
+      "transit_gateway_id": "tgw-east",
+      "kind": "peering",
+      "resource_id": "tgw-west",
+      "state": "available"
+    },
+    "tgw-attach-inspection-west": {
+      "id": "tgw-attach-inspection-west",
+      "name": "inspection-vpc-attachment-west",
+      "region": "us-west-2",
+      "transit_gateway_id": "tgw-west",
+      "kind": "vpc",
+      "resource_id": "vpc-inspection-west",
+      "state": "available"
+    },
+    "tgw-attach-edge-west": {
+      "id": "tgw-attach-edge-west",
+      "name": "edge-vpc-attachment",
+      "region": "us-west-2",
+      "transit_gateway_id": "tgw-west",
+      "kind": "vpc",
+      "resource_id": "vpc-edge-west",
+      "state": "available"
+    }
+  },
+  "tgw_route_tables": {
+    "tgw-rt-inspection-east": {
+      "id": "tgw-rt-inspection-east",
+      "name": "trt-inspection-prod-use1",
+      "region": "us-east-1",
+      "transit_gateway_id": "tgw-east",
+      "associated_attachments": ["tgw-attach-prod-east"],
+      "routes": [
+        { "destination": "0.0.0.0/0", "target_kind": "attachment", "target_id": "vpc-inspection-east", "state": "active" }
+      ]
+    },
+    "tgw-rt-no-inspection-east": {
+      "id": "tgw-rt-no-inspection-east",
+      "name": "trt-no-inspection-prod-use1",
+      "region": "us-east-1",
+      "transit_gateway_id": "tgw-east",
+      "associated_attachments": ["tgw-attach-inspection-east"],
+      "routes": [
+        { "destination": "10.0.0.0/8", "target_kind": "blackhole", "state": "blackhole" },
+        { "destination": "10.30.128.0/17", "target_kind": "attachment", "target_id": "tgw-west", "state": "active" }
+      ]
+    },
+    "tgw-rt-inspection-west": {
+      "id": "tgw-rt-inspection-west",
+      "name": "trt-inspection-prod-usw2",
+      "region": "us-west-2",
+      "transit_gateway_id": "tgw-west",
+      "associated_attachments": ["tgw-attach-peering-west"],
+      "routes": [
+        { "destination": "0.0.0.0/0", "target_kind": "attachment", "target_id": "vpc-inspection-west", "state": "active" }
+      ]
+    },
+    "tgw-rt-no-inspection-west": {
+      "id": "tgw-rt-no-inspection-west",
+      "name": "trt-no-inspection-prod-usw2",
+      "region": "us-west-2",
+      "transit_gateway_id": "tgw-west",
+      "associated_attachments": ["tgw-attach-inspection-west"],
+      "routes": [
+        { "destination": "10.30.192.0/20", "target_kind": "attachment", "target_id": "vpc-edge-west", "state": "active" }
+      ]
+    }
+  },
+  "firewalls": {
+    "fw-east": {
+      "id": "fw-east",
+      "name": "nfw-prod-use1",
+      "region": "us-east-1",
+      "account": "111122223333",
+      "vpc_id": "vpc-inspection-east",
+      "policy_arn": "arn:aws:network-firewall:us-east-1:111122223333:firewall-policy/prod-use1"
+    },
+    "fw-west": {
+      "id": "fw-west",
+      "name": "nfw-prod-usw2",
+      "region": "us-west-2",
+      "account": "111122223333",
+      "vpc_id": "vpc-inspection-west",
+      "policy_arn": "arn:aws:network-firewall:us-west-2:111122223333:firewall-policy/prod-usw2"
+    }
+  },
+  "firewall_policies": {
+    "arn:aws:network-firewall:us-east-1:111122223333:firewall-policy/prod-use1": {
+      "id": "prod-use1",
+      "name": "nfp-prod-use1",
+      "region": "us-east-1",
+      "stateful_rule_order": "STRICT_ORDER",
+      "stateful_default_actions": ["aws:drop_established", "aws:alert_strict"],
+      "stateful_groups": [
+        { "arn": "arn:aws:network-firewall:us-east-1:111122223333:stateful-rulegroup/icmp-pass", "priority": 10 }
+      ]
+    },
+    "arn:aws:network-firewall:us-west-2:111122223333:firewall-policy/prod-usw2": {
+      "id": "prod-usw2",
+      "name": "nfp-prod-usw2",
+      "region": "us-west-2",
+      "stateful_rule_order": "STRICT_ORDER",
+      "stateful_default_actions": ["aws:drop_established", "aws:alert_strict"],
+      "stateful_groups": [
+        { "arn": "arn:aws:network-firewall:us-west-2:111122223333:stateful-rulegroup/icmp-pass-west", "priority": 2 }
+      ]
+    }
+  },
+  "rule_groups": {
+    "arn:aws:network-firewall:us-east-1:111122223333:stateful-rulegroup/icmp-pass": {
+      "id": "icmp-pass",
+      "arn": "arn:aws:network-firewall:us-east-1:111122223333:stateful-rulegroup/icmp-pass",
+      "name": "nfr-prod-use1-allow-icmp-allvpcs",
+      "region": "us-east-1",
+      "capacity": 10,
+      "rule_order": "STRICT_ORDER",
+      "rules": [
+        {
+          "action": "PASS",
+          "protocol": "ICMP",
+          "source": "ANY",
+          "source_port": "ANY",
+          "destination": "ANY",
+          "destination_port": "ANY",
+          "direction": "ANY",
+          "sid": "1"
+        }
+      ]
+    },
+    "arn:aws:network-firewall:us-west-2:111122223333:stateful-rulegroup/icmp-pass-west": {
+      "id": "icmp-pass-west",
+      "arn": "arn:aws:network-firewall:us-west-2:111122223333:stateful-rulegroup/icmp-pass-west",
+      "name": "nfw-prod-usw2-stateful-icmp-pass",
+      "region": "us-west-2",
+      "capacity": 10,
+      "rule_order": "STRICT_ORDER",
+      "rules": [
+        {
+          "action": "PASS",
+          "protocol": "ICMP",
+          "source": "ANY",
+          "source_port": "ANY",
+          "destination": "ANY",
+          "destination_port": "ANY",
+          "direction": "ANY",
+          "sid": "1"
+        }
+      ]
+    }
+  }
+}

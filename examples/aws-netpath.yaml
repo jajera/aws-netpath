@@ -1,0 +1,61 @@
+# Example aws-netpath configuration.
+#
+# Every value here is a placeholder. Account IDs are reserved documentation IDs,
+# profile names are generic, and address space uses RFC 1918 and RFC 5737 ranges.
+# Nothing in aws-netpath assumes a particular region, account, or naming scheme.
+#
+# Each account is reached through its own credential profile. No AWS Organizations
+# trusted access, delegated administrator, or org-wide role is required.
+
+accounts:
+  # The hub account owning the transit gateways and inspection VPCs.
+  - id: "111122223333"
+    profile: network-hub
+    regions:
+      - us-east-1
+      - us-west-2
+
+  - id: "444455556666"
+    profile: workload-prod
+    regions:
+      - us-east-1
+      - us-west-2
+
+  - id: "777788889999"
+    profile: workload-dev
+    regions:
+      - us-east-1
+      - us-west-2
+
+  # An account present in one region only. Regions are per-account, which is why
+  # a config file is easier here than repeating --regions on every invocation.
+  - id: "222233334444"
+    profile: workload-edge
+    regions:
+      - us-west-2
+
+  - id: "555566667777"
+    profile: shared-services
+    regions:
+      - us-east-1
+
+  - id: "888899990000"
+    profile: network-ops
+    regions:
+      - us-east-1
+
+# Optional: declare address space that is not in AWS, such as an on-premises
+# range reached over Direct Connect. Declaring it makes a non-cloud destination
+# an ordinary node in the graph rather than an unknown address.
+# external:
+#   - name: on-prem
+#     cidrs:
+#       - 192.168.0.0/16
+#     reached_via: dx-gateway
+#     description: On-premises estate via Direct Connect
+#
+#   - name: partner
+#     cidrs:
+#       - 203.0.113.0/24
+#     reached_via: vpn
+#     description: Partner network via site-to-site VPN

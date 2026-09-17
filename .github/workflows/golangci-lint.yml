@@ -1,0 +1,22 @@
+---
+name: golangci-lint
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  statuses: write
+
+jobs:
+  # config-file is left at the reusable's default of .golangci.yml, which is
+  # tracked at the repository root. Local `golangci-lint run` and this job
+  # therefore read the same configuration.
+  golangci-lint:
+    uses: actionsforge/actions-golangci-lint/.github/workflows/golangci-lint.yml@v0.0.11
+    with:
+      go-version: stable
