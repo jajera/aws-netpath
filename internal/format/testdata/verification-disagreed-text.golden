@@ -1,6 +1,6 @@
 flow: 10.0.1.10/32 -> 10.1.2.30/32 tcp/443
 source: engine: PERMITTED (7 hops evaluated, none blocked)
-source: reachability analyzer: NOT REACHABLE (analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)
+source: reachability analyzer: NOT REACHABLE (analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)
 verdict: DISAGREEMENT: model permits but AWS blocks
 !! the engine and the reachability analyzer disagree: engine reports PERMITTED, reachability analyzer reports NOT REACHABLE — neither is preferred and neither is treated as correct, so the disagreement is reported rather than resolved, and one of the two is wrong about this flow
 
@@ -8,10 +8,10 @@ verdicts compared:
   [PERMITTED] engine
          7 hops evaluated, none blocked
          cited: offline path walk  7 hops evaluated, none blocked
-         cited: nfw-inspection-apse2  nfr-allow-east-west sid 3 (priority 6) PASS
+         cited: nfw-inspection-usw2  nfr-allow-east-west sid 3 (priority 6) PASS
   [NOT REACHABLE] reachability analyzer
-         analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a
-         cited: nia-0123456789abcdef0  analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a
+         analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a
+         cited: nia-0123456789abcdef0  analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a
   (the engine and the reachability analyzer disagree; both verdicts stand as reported, neither is taken as correct, and this section resolves nothing)
 
 corroborated:

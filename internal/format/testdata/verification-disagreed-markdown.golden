@@ -4,7 +4,7 @@
 
 - flow: 10.0.1.10/32 -> 10.1.2.30/32 tcp/443
 - engine: PERMITTED (7 hops evaluated, none blocked)
-- reachability analyzer: NOT REACHABLE (analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)
+- reachability analyzer: NOT REACHABLE (analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)
 
 ## verdicts compared
 
@@ -12,9 +12,9 @@
 | --- | --- | --- | --- |
 | engine | PERMITTED |  | 7 hops evaluated, none blocked |
 | engine | PERMITTED | `offline path walk` | 7 hops evaluated, none blocked |
-| engine | PERMITTED | `nfw-inspection-apse2` | nfr-allow-east-west sid 3 (priority 6) PASS |
-| reachability analyzer | NOT REACHABLE |  | analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a |
-| reachability analyzer | NOT REACHABLE | `nia-0123456789abcdef0` | analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a |
+| engine | PERMITTED | `nfw-inspection-usw2` | nfr-allow-east-west sid 3 (priority 6) PASS |
+| reachability analyzer | NOT REACHABLE |  | analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a |
+| reachability analyzer | NOT REACHABLE | `nia-0123456789abcdef0` | analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a |
 
 _the engine and the reachability analyzer disagree; both verdicts stand as reported, neither is taken as correct, and this section resolves nothing._
 

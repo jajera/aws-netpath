@@ -26,7 +26,7 @@ import (
 const (
 	accountA = "111122223333"
 	accountB = "444455556666"
-	regionA  = "ap-southeast-2"
+	regionA  = "us-west-2"
 	regionB  = "us-east-1"
 )
 

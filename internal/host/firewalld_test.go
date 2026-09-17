@@ -102,11 +102,11 @@ func TestParseRichRule(t *testing.T) {
 			// Priority decides which of two conflicting rules firewalld applies,
 			// so a rule that carries one is not the same rule without it.
 			name: "explicit priority",
-			line: `rule priority="100" family="ipv4" source address="172.16.0.0/12" port port="22" protocol="tcp" accept`,
+			line: `rule priority="100" family="ipv4" source address="192.168.0.0/16" port port="22" protocol="tcp" accept`,
 			want: richRuleWant{
 				priority: 100,
 				family:   "ipv4",
-				source:   "172.16.0.0/12",
+				source:   "192.168.0.0/16",
 				element:  "port",
 				ports:    "22",
 				protocol: flow.ProtoTCP,

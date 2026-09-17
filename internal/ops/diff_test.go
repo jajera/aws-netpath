@@ -25,7 +25,7 @@ const (
 	diffSubnetID = "subnet-0123456789abcdef0"
 	diffAddedID  = "subnet-0fedcba9876543210"
 	diffAccount  = "111122223333"
-	diffRegion   = "ap-southeast-2"
+	diffRegion   = "us-west-2"
 )
 
 // diffFixture is a small collection: one VPC and one subnet in one scope.

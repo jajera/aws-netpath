@@ -6,14 +6,14 @@ verdict: CHANGED: 1 added, 1 removed, 1 modified
 changes:
   [MODIFIED] vpc — 444455556666 / us-east-1
          cited: vpc-0ddd3333eeee4444f  cidrs changed: ["10.1.0.0/16"] → ["10.1.0.0/16","10.2.0.0/16"]
-  [ADDED] subnet — 111122223333 / ap-southeast-2
+  [ADDED] subnet — 111122223333 / us-west-2
          cited: subnet-0fedcba9876543210  added, name app-b
-  [REMOVED] security_group — 111122223333 / ap-southeast-2
+  [REMOVED] security_group — 111122223333 / us-west-2
          cited: sg-0111111111111111a  removed, name app-sg
   (grouped by resource type, account, and region; 1 added, 1 removed, 1 modified)
 
 unchanged:
-  [SAME ] vpc — 111122223333 / ap-southeast-2 (1)
+  [SAME ] vpc — 111122223333 / us-west-2 (1)
   (2 resources are identical in both snapshots; a diff reports changes only)
 
 incomplete comparisons:

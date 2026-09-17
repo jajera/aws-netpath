@@ -21,7 +21,7 @@ import (
 const (
 	diffAccountA = "111122223333"
 	diffAccountB = "444455556666"
-	diffRegionA  = "ap-southeast-2"
+	diffRegionA  = "us-west-2"
 	diffRegionB  = "us-east-1"
 )
 

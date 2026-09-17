@@ -7,18 +7,31 @@
 # a denylist of known-bad values: enumerating real values in a checked-in script
 # would defeat the purpose. Anything not explicitly permitted fails.
 #
-# Run from the repository root:
+# Invoked by path from the pre-commit hook and from CI, so it works from any
+# working directory:
 #   ./scripts/sanitise-gate.sh
 #
 set -uo pipefail
 
+# The hook and CI both call this by path from wherever they happen to be, and
+# every check below resolves paths relative to the repository root.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
 fail=0
 
-# Files to scan: everything tracked, minus binaries, module checksums, the spec
-# directory (which quotes the pre-migration module path as history), and this
-# script (whose allowlist patterns would otherwise match themselves).
+# Files to scan: everything tracked plus everything untracked that is not
+# ignored, minus binaries, module checksums, the spec directory (which quotes the
+# pre-migration module path as history), and this script (whose allowlist
+# patterns would otherwise match themselves).
+#
+# --others --exclude-standard is what makes this gate useful. A gate that reads
+# only committed content passes on the changeset you are about to commit, which
+# is the single moment the answer matters: the values it exists to catch are
+# still untracked when the hook runs, so scanning the index alone reports green
+# on a tree nobody has looked at. Ignored files stay out, so a local snapshot or
+# a built binary does not fail the run.
 scan_files() {
-  git ls-files \
+  git ls-files --cached --others --exclude-standard \
     | grep -vE '^(bin/|\.kiro/|go\.sum$|LICENSE$|scripts/sanitise-gate\.sh$)' \
     | grep -vE '\.(png|jpg|jpeg|gif|ico|pdf)$'
 }
@@ -41,6 +54,11 @@ report() {
 # The allowlist is deliberately narrower than RFC 1918 as a whole. Examples,
 # fixtures, and tests draw private space from 10.0.0.0/8 and 192.168.0.0/16 only,
 # so any other private range appearing here is an unreviewed value and fails.
+#
+# One literal is allowlisted by exact value rather than by range: 3.3.0.0 is a
+# Systems Manager agent version, not an address. Agent versions are four-part, so
+# every realistic value is IPv4-shaped and no substitution can avoid the match.
+# The allowlist is that exact string only, so it cannot admit a real address.
 # ---------------------------------------------------------------------------
 echo "checking IPv4 literals..."
 bad_ip=$(
@@ -53,7 +71,8 @@ bad_ip=$(
     | grep -vE '^203\.0\.113\.' \
     | grep -vE '^127\.' \
     | grep -vE '^169\.254\.' \
-    | grep -vE '^(0\.0\.0\.0|128\.0\.0\.0|255\.255\.255\.255)$'
+    | grep -vE '^(0\.0\.0\.0|128\.0\.0\.0|255\.255\.255\.255)$' \
+    | grep -vxF '3.3.0.0'
 )
 if [ -n "$bad_ip" ]; then
   echo "FAIL: address literals outside the reserved documentation ranges:"
@@ -104,7 +123,7 @@ fi
 # ---------------------------------------------------------------------------
 echo "checking for environment coupling in logic..."
 coupled=$(
-  git ls-files '*.go' | grep -v '_test\.go$' \
+  git ls-files --cached --others --exclude-standard '*.go' | grep -v '_test\.go$' \
     | xargs grep -nE '"(af|ap|ca|cn|eu|il|me|sa|us)-[a-z]+-[0-9]{1,2}"|\b[0-9]{12}\b' 2>/dev/null
 )
 if [ -n "$coupled" ]; then

@@ -14,7 +14,7 @@ import (
 
 const (
 	testAccount = "111122223333"
-	testRegion  = "ap-southeast-2"
+	testRegion  = "us-west-2"
 )
 
 // stubENIClient replays canned DescribeNetworkInterfaces pages in order and

@@ -4,7 +4,7 @@
   "outcome": "DISAGREEMENT: model permits but AWS blocks",
   "subjects": [
     "engine: PERMITTED (7 hops evaluated, none blocked)",
-    "reachability analyzer: NOT REACHABLE (analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)"
+    "reachability analyzer: NOT REACHABLE (analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a)"
   ],
   "finding": {
     "title": "verdicts compared",
@@ -19,17 +19,17 @@
         "detail": "7 hops evaluated, none blocked"
       },
       {
-        "subject": "nfw-inspection-apse2",
+        "subject": "nfw-inspection-usw2",
         "detail": "nfr-allow-east-west sid 3 (priority 6) PASS"
       },
       {
         "layer": "reachability analyzer",
         "verdict": "NOT REACHABLE",
-        "detail": "analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a"
+        "detail": "analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a"
       },
       {
         "subject": "nia-0123456789abcdef0",
-        "detail": "analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a"
+        "detail": "analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a"
       }
     ],
     "note": "the engine and the reachability analyzer disagree; both verdicts stand as reported, neither is taken as correct, and this section resolves nothing"

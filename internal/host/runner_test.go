@@ -50,7 +50,10 @@ func (s *stubSSM) SendCommand(_ context.Context, in *ssm.SendCommandInput, _ ...
 		return &ssm.SendCommandOutput{}, nil
 	}
 	return &ssm.SendCommandOutput{Command: &ssmtypes.Command{
-		CommandId: aws.String("11111111-2222-3333-4444-555555555555"),
+		// The last group ends in a hex letter so the literal carries no run of
+		// twelve digits, which the environment-neutrality gate reads as an
+		// account identifier. Still a well-formed UUID, still plainly synthetic.
+		CommandId: aws.String("11111111-2222-3333-4444-55555555555a"),
 	}}, nil
 }
 

@@ -39,7 +39,7 @@ var (
 	}
 	crossRegionCaveat = Caveat{
 		Subject:  "cross-region path",
-		Summary:  "no single Reachability Analyzer run covers ap-southeast-2 to us-east-1: an analysis is scoped to one region, so no run evaluates this path end to end and two runs cannot be joined into one verdict",
+		Summary:  "no single Reachability Analyzer run covers us-west-2 to us-east-1: an analysis is scoped to one region, so no run evaluates this path end to end and two runs cannot be joined into one verdict",
 		Coverage: true,
 	}
 )
@@ -64,16 +64,16 @@ func disagreedVerification() Verification {
 				Detail: "7 hops evaluated, none blocked",
 			},
 			model.Citation{
-				Kind: "nfw_rule", Identifier: "nfw-inspection-apse2",
+				Kind: "nfw_rule", Identifier: "nfw-inspection-usw2",
 				Detail: "nfr-allow-east-west sid 3 (priority 6) PASS",
 			},
 		),
 		Analyser: analyserAnswer("NOT REACHABLE",
-			"analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a",
+			"analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a",
 			model.Citation{
 				Kind:       "reachability_analyzer",
 				Identifier: "nia-0123456789abcdef0",
-				Detail:     "analysis in ap-southeast-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a",
+				Detail:     "analysis in us-west-2 from eni-0123456789abcdef0 to eni-0abcdef123456789a",
 			},
 		),
 		Concordance: ConcordanceDisagree,
@@ -93,10 +93,10 @@ func agreedVerification() Verification {
 				Detail: "ingress no matching rule (implicit deny)",
 			},
 		),
-		Analyser: analyserAnswer("NOT REACHABLE", "analysis in ap-southeast-2",
+		Analyser: analyserAnswer("NOT REACHABLE", "analysis in us-west-2",
 			model.Citation{
 				Kind: "reachability_analyzer", Identifier: "nia-0123456789abcdef0",
-				Detail: "analysis in ap-southeast-2",
+				Detail: "analysis in us-west-2",
 			},
 		),
 		Concordance: ConcordanceAgree,
@@ -116,10 +116,10 @@ func crossRegionVerification() Verification {
 			},
 		),
 		Analyser: analyserAnswer(labelNoResultForTest,
-			"cross-region (ap-southeast-2 → us-east-1): Reachability Analyzer is single-region",
+			"cross-region (us-west-2 → us-east-1): Reachability Analyzer is single-region",
 			model.Citation{
 				Kind: "reachability_analyzer", Identifier: "no analysis",
-				Detail: "cross-region (ap-southeast-2 → us-east-1): Reachability Analyzer is single-region",
+				Detail: "cross-region (us-west-2 → us-east-1): Reachability Analyzer is single-region",
 			},
 		),
 		Concordance: ConcordanceUnestablished,
@@ -292,7 +292,7 @@ func TestVerificationReportsNoSingleRunCoversACrossRegionFlow(t *testing.T) {
 	for _, mode := range []Mode{ModeText, ModeMarkdown, ModeJSON} {
 		got := render(t, report, Options{Mode: mode})
 		for _, want := range []string{
-			"no single Reachability Analyzer run covers ap-southeast-2 to us-east-1",
+			"no single Reachability Analyzer run covers us-west-2 to us-east-1",
 			"scoped to one region",
 			"cross-region path",
 		} {

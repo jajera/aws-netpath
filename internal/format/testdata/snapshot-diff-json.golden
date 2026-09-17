@@ -17,7 +17,7 @@
         "detail": "cidrs changed: [\"10.1.0.0/16\"] → [\"10.1.0.0/16\",\"10.2.0.0/16\"]"
       },
       {
-        "layer": "subnet — 111122223333 / ap-southeast-2",
+        "layer": "subnet — 111122223333 / us-west-2",
         "verdict": "ADDED"
       },
       {
@@ -25,7 +25,7 @@
         "detail": "added, name app-b"
       },
       {
-        "layer": "security_group — 111122223333 / ap-southeast-2",
+        "layer": "security_group — 111122223333 / us-west-2",
         "verdict": "REMOVED"
       },
       {
@@ -39,7 +39,7 @@
     "title": "unchanged",
     "rows": [
       {
-        "layer": "vpc — 111122223333 / ap-southeast-2 (1)",
+        "layer": "vpc — 111122223333 / us-west-2 (1)",
         "verdict": "SAME"
       }
     ],
