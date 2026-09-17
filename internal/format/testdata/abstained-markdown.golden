@@ -1,0 +1,28 @@
+# diagnosis — NO BLOCKER FOUND
+
+> **Not authoritative.** this verdict is not authoritative: it rests on 2 abstentions — firewall (nfw-inspection-usw2: domain-allowlist (priority 1): domain list rule group is not modelled); host_firewall (systems manager does not manage i-0abcdef123456789a, so the host firewall was not read); a layer that could not be evaluated may be the one blocking this flow
+
+- flow: 10.0.1.10/32 -> 198.51.100.5/32 tcp/443
+- source: 10.0.1.10 (eni-0123456789abcdef0) in subnet-0123456789abcdef0
+- destination: 198.51.100.5 (declared external partner-service)
+
+## blocking layer
+
+_no layer was shown to block this flow._
+
+## cleared layers
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| resolution | ALLOW | `eni-0123456789abcdef0` | source 10.0.1.10 resolved to i-0123456789abcdef0 in subnet-0123456789abcdef0 |
+| route | ALLOW | `rtb-0aaa1111bbbb2222c` | route: 198.51.100.0/24 -> igw-0123456789abcdef0 |
+
+## abstentions
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| firewall | ABSTAIN |  | nfw-inspection-usw2: domain-allowlist (priority 1): domain list rule group is not modelled |
+| firewall | ABSTAIN | `domain-allowlist (priority 1)` | domain list rule group is not modelled |
+| host_firewall | ABSTAIN |  | systems manager does not manage i-0abcdef123456789a, so the host firewall was not read |
+
+_firewall, host_firewall could have changed this verdict._

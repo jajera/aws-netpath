@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Verify on Stop",
+      "description": "Runs the repository's full gate set once when the agent finishes a turn: sanitise-gate, go build, go vet, gofmt, golangci-lint, go test. One PASS/FAIL line per gate; exits non-zero on a real failure.",
+      "trigger": "Stop",
+      "action": {
+        "type": "command",
+        "command": "bash .kiro/hooks/verify.sh",
+        "timeout": 300
+      },
+      "enabled": true
+    }
+  ]
+}

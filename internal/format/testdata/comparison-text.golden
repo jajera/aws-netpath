@@ -1,0 +1,23 @@
+path: failing path 10.0.1.10 -> 10.1.2.30: blocked at host_firewall, symptom timeout
+path: reference path 10.0.2.20 -> 10.1.2.30: permitted
+verdict: DIFFERS at security_group, host_firewall
+
+differences:
+  [DIFFERS] security_group
+         both paths pass at security_group on different entries: 1 entry only on the failing path, 1 entry only on the reference path
+         cited: failing only: sg-0111111111111111a  egress rule allows tcp/443 to 10.1.0.0/16
+         cited: reference only: sg-0222222222222222b  egress rule allows tcp/443 to 10.1.0.0/16
+  [DIFFERS] host_firewall
+         host_firewall blocks the failing path and permits the reference path (1 entry only on the failing path, 1 entry only on the reference path)
+         cited: failing only: firewall-cmd --zone=public --list-rich-rules  zone public allows 10.0.2.0/24; source 10.0.1.10 is not covered
+         cited: reference only: firewall-cmd --zone=public --list-rich-rules  zone public allows 10.0.2.0/24; source 10.0.2.20 is covered
+  (the failing path is blocked at host_firewall while the reference path is permitted)
+
+matched layers:
+  [MATCH] route
+  [MATCH] nacl
+  [MATCH] firewall
+  (entries omitted: a comparison reports differences only)
+
+incomplete comparisons:
+  (every layer either path reported was compared)

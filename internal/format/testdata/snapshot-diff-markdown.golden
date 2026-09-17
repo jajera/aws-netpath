@@ -1,0 +1,28 @@
+# snapshot diff — CHANGED: 1 added, 1 removed, 1 modified
+
+> **Not authoritative.** this comparison may be incomplete: schema version
+
+- before snapshot: captured 2025-03-01T09:00:00Z, schema version 1, 4 resources
+- after snapshot: captured 2025-03-08T09:00:00Z, schema version 2, 4 resources
+
+## changes
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| vpc — 444455556666 / us-east-1 | MODIFIED | `vpc-0ddd3333eeee4444f` | cidrs changed: ["10.1.0.0/16"] → ["10.1.0.0/16","10.2.0.0/16"] |
+| subnet — 111122223333 / us-west-2 | ADDED | `subnet-0fedcba9876543210` | added, name app-b |
+| security_group — 111122223333 / us-west-2 | REMOVED | `sg-0111111111111111a` | removed, name app-sg |
+
+_grouped by resource type, account, and region; 1 added, 1 removed, 1 modified._
+
+## unchanged
+
+- vpc — 111122223333 / us-west-2 (1) (SAME)
+
+_2 resources are identical in both snapshots; a diff reports changes only._
+
+## incomplete comparisons
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| schema version | INCOMPLETE |  | the before snapshot was written at schema version 1 and the after snapshot at version 2, so this comparison may be incomplete: a field one version records and the other does not cannot be told apart from a field that changed |

@@ -1,0 +1,28 @@
+flow: 10.0.1.10/32 -> 10.1.2.30/32 tcp/443
+source: 10.0.1.10 (eni-0123456789abcdef0) in subnet-0123456789abcdef0
+destination: 10.1.2.30 (eni-0abcdef123456789a) in subnet-0abcdef123456789a
+symptom: timeout
+host: i-0abcdef123456789a (probed)
+verdict: BLOCKED at host_firewall
+
+blocking layer — host_firewall:
+  [DENY ] host_firewall
+         cited: firewall-cmd --zone=public --list-rich-rules  zone public allows 10.0.2.0/24 and 10.0.3.0/24; source 10.0.1.10 is in neither
+
+cleared layers:
+  [ALLOW] resolution
+         cited: eni-0123456789abcdef0  source 10.0.1.10 resolved to i-0123456789abcdef0 in subnet-0123456789abcdef0
+  [ALLOW] route
+         cited: rtb-0aaa1111bbbb2222c  route: 10.1.0.0/16 -> tgw-0abc1234def567890
+  [ALLOW] nacl
+         cited: acl-0123456789abcdef0  egress rule 100 allows tcp/443
+  [ALLOW] security_group
+         cited: sg-0123456789abcdef0  egress rule allows tcp/443 to 10.1.0.0/16
+  [ALLOW] firewall
+         cited: nfr-allow-east-west sid 3 (priority 6)  PASS
+  [ALLOW] host_listener
+         cited: ss -tlnp  listening on 0.0.0.0:443
+
+abstentions:
+  (no layer abstained)
+note: return direction uses any destination port for TCP/UDP (client ephemeral port unknown)

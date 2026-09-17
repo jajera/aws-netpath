@@ -1,0 +1,23 @@
+---
+name: govulncheck
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+  # A new CVE in a dependency is not tied to a commit: the tree can go from clean
+  # to vulnerable without anything being pushed. The weekly run is what catches
+  # that, rather than waiting for the next pull request to happen along.
+  schedule:
+    - cron: '17 4 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  govulncheck:
+    uses: actionsforge/actions-govulncheck/.github/workflows/govulncheck.yml@v0.0.10
+    with:
+      go-version: stable
+      mode: source
+      include-tests: true

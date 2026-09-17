@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-01T00:00:00Z",
+  "accounts": ["111122223333"],
+  "regions": ["us-east-1"],
+  "vpcs": {
+    "vpc-0123456789abcdef0": {
+      "id": "vpc-0123456789abcdef0",
+      "name": "workload",
+      "region": "us-east-1",
+      "account": "111122223333",
+      "cidrs": ["10.0.0.0/16"]
+    }
+  },
+  "subnets": {
+    "subnet-0123456789abcdef0": {
+      "id": "subnet-0123456789abcdef0",
+      "name": "app",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "cidr": "10.0.1.0/24",
+      "route_table_id": "rtb-0123456789abcdef0"
+    },
+    "subnet-0123456789abcdef1": {
+      "id": "subnet-0123456789abcdef1",
+      "name": "database",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "cidr": "10.0.2.0/24",
+      "route_table_id": "rtb-0123456789abcdef0"
+    }
+  },
+  "route_tables": {
+    "rtb-0123456789abcdef0": {
+      "id": "rtb-0123456789abcdef0",
+      "name": "workload-main",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "routes": [
+        { "destination": "10.0.0.0/16", "target_kind": "local", "target_id": "local" }
+      ]
+    }
+  },
+  "security_groups": {
+    "sg-0123456789abcdef0": {
+      "id": "sg-0123456789abcdef0",
+      "name": "app",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "egress": [
+        {
+          "protocol": "tcp",
+          "from_port": 443,
+          "to_port": 443,
+          "cidrs": ["10.0.0.0/16"],
+          "description": "app to database"
+        }
+      ]
+    },
+    "sg-0123456789abcdef1": {
+      "id": "sg-0123456789abcdef1",
+      "name": "database",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "ingress": [
+        {
+          "protocol": "tcp",
+          "from_port": 443,
+          "to_port": 443,
+          "cidrs": ["10.0.1.0/24"],
+          "description": "app subnet to database"
+        }
+      ]
+    }
+  },
+  "network_interfaces": {
+    "eni-0123456789abcdef0": {
+      "id": "eni-0123456789abcdef0",
+      "name": "app",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "subnet_id": "subnet-0123456789abcdef0",
+      "private_ips": ["10.0.1.10"],
+      "security_group_ids": ["sg-0123456789abcdef0"],
+      "attached_to": "i-0123456789abcdef0",
+      "status": "in-use"
+    },
+    "eni-0123456789abcdef1": {
+      "id": "eni-0123456789abcdef1",
+      "name": "database",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0123456789abcdef0",
+      "subnet_id": "subnet-0123456789abcdef1",
+      "private_ips": ["10.0.2.20"],
+      "security_group_ids": ["sg-0123456789abcdef1"],
+      "attached_to": "i-0123456789abcdef1",
+      "status": "in-use"
+    }
+  }
+}

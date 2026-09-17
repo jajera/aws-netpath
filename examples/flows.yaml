@@ -1,0 +1,27 @@
+# Declared flows for `aws-netpath test`.
+#
+# Each entry asserts whether traffic gets through, not which layer decided it: a
+# change that moves a refusal from a security group to a firewall rule has not
+# broken anything declared here.
+#
+# Endpoints accept anything endpoint resolution accepts — an address, a CIDR, an
+# instance ID, or a Name tag. `proto` is required and never defaulted, because a
+# declared flow with an implied protocol asserts something other than what its
+# author read.
+#
+# Addresses below are RFC 1918 and RFC 5737 documentation ranges. Substitute your
+# own.
+flows:
+  - name: east-west https must stay permitted
+    from: 10.30.32.10
+    to: 10.30.192.10
+    proto: tcp
+    port: 443
+    expect: permitted
+
+  - name: workloads must not reach the management range over ssh
+    from: 10.30.32.10
+    to: 192.0.2.10
+    proto: tcp
+    port: 22
+    expect: blocked

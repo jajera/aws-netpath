@@ -1,0 +1,35 @@
+---
+version: "2"
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - misspell
+    - staticcheck
+    - unused
+
+  settings:
+    errcheck:
+      # Two idioms where the returned error is not actionable, excluded here
+      # rather than silenced at each call site: a `_ =` prefix on every
+      # renderer buys no behaviour and hides the ones that do matter.
+      exclude-functions:
+        # A failed write to stdout or stderr can only be reported on that same
+        # failed stream. Every one of these is rendering output or usage text,
+        # so there is no other channel left to report on and nothing to recover.
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
+        # A deferred Close on a read handle carries no error worth acting on:
+        # the read already succeeded or already returned its own error. Where a
+        # Close does report something — the flush on a file being written — it
+        # is called explicitly and its error returned, which errcheck still
+        # checks because a returned error is a checked one.
+        - (*os.File).Close
+
+formatters:
+  enable:
+    - gofmt

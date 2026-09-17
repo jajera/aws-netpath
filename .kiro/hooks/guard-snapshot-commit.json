@@ -1,0 +1,17 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Block staging or committing a collected snapshot",
+      "description": "A snapshot is an unsanitised model of a real network and nothing here redacts one. Refuses git add / commit / stash push naming a snapshot path, including git add -f, which defeats .gitignore. Hand-written testdata fixtures are allowlisted.",
+      "trigger": "PreToolUse",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "command",
+        "command": "python3 .kiro/hooks/guard-snapshot-commit.py",
+        "timeout": 30
+      },
+      "enabled": true
+    }
+  ]
+}

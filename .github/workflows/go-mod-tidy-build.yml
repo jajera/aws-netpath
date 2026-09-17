@@ -1,0 +1,19 @@
+---
+name: Go Mod Tidy and Build
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  go-mod-tidy-build:
+    uses: actionsforge/actions/.github/workflows/go-mod-tidy-build.yml@main
+    with:
+      go-version: stable
+      tidy: true
+      build: true
+      build-command: go build -v ./...

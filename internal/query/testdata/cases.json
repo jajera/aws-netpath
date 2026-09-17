@@ -1,0 +1,60 @@
+[
+  {
+    "name": "icmp/default-action-pass/end-to-end-permitted",
+    "snapshot": "default-action-pass.json",
+    "from": "10.30.32.10",
+    "to": "10.30.192.10",
+    "proto": "icmp",
+    "want_verdict": "PERMITTED"
+  },
+  {
+    "name": "icmp/double-inspection/end-to-end-permitted",
+    "snapshot": "double-inspection.json",
+    "from": "10.30.32.10",
+    "to": "10.30.192.10",
+    "proto": "icmp",
+    "want_verdict": "PERMITTED",
+    "want_hop_layers": ["route", "tgw", "tgw-route", "inspection-vpc", "firewall", "tgw-peering", "inspection-vpc", "firewall", "tgw"]
+  },
+  {
+    "name": "tcp443/default-action-pass/permitted-by-default-action",
+    "snapshot": "default-action-pass.json",
+    "from": "10.30.32.10",
+    "to": "10.30.192.10",
+    "proto": "tcp",
+    "port": 443,
+    "want_verdict": "PERMITTED"
+  },
+  {
+    "name": "tcp443/double-inspection/passes-east-blocked-west",
+    "snapshot": "double-inspection.json",
+    "from": "10.30.32.10",
+    "to": "10.30.192.10",
+    "proto": "tcp",
+    "port": 443,
+    "want_verdict": "BLOCKED",
+    "want_blocked_layer": "firewall",
+    "want_blocked_resource": "nfw-prod-usw2"
+  },
+  {
+    "name": "tcp443/route-only/skips-firewall",
+    "snapshot": "default-action-pass.json",
+    "from": "10.30.32.10",
+    "to": "10.30.192.10",
+    "proto": "tcp",
+    "port": 443,
+    "skip_firewall": true,
+    "want_verdict": "PERMITTED"
+  },
+  {
+    "name": "tcp8080/double-inspection/blocked-at-west-default",
+    "snapshot": "double-inspection.json",
+    "from": "10.30.32.10",
+    "to": "10.30.192.10",
+    "proto": "tcp",
+    "port": 8080,
+    "want_verdict": "BLOCKED",
+    "want_blocked_layer": "firewall",
+    "want_blocked_resource": "nfw-prod-usw2"
+  }
+]

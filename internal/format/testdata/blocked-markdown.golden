@@ -1,0 +1,32 @@
+# diagnosis — BLOCKED at host_firewall
+
+- flow: 10.0.1.10/32 -> 10.1.2.30/32 tcp/443
+- source: 10.0.1.10 (eni-0123456789abcdef0) in subnet-0123456789abcdef0
+- destination: 10.1.2.30 (eni-0abcdef123456789a) in subnet-0abcdef123456789a
+- symptom: timeout
+- host: i-0abcdef123456789a (probed)
+
+## blocking layer — host_firewall
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| host_firewall | DENY | `firewall-cmd --zone=public --list-rich-rules` | zone public allows 10.0.2.0/24 and 10.0.3.0/24; source 10.0.1.10 is in neither |
+
+## cleared layers
+
+| layer | verdict | evidence | detail |
+| --- | --- | --- | --- |
+| resolution | ALLOW | `eni-0123456789abcdef0` | source 10.0.1.10 resolved to i-0123456789abcdef0 in subnet-0123456789abcdef0 |
+| route | ALLOW | `rtb-0aaa1111bbbb2222c` | route: 10.1.0.0/16 -> tgw-0abc1234def567890 |
+| nacl | ALLOW | `acl-0123456789abcdef0` | egress rule 100 allows tcp/443 |
+| security_group | ALLOW | `sg-0123456789abcdef0` | egress rule allows tcp/443 to 10.1.0.0/16 |
+| firewall | ALLOW | `nfr-allow-east-west sid 3 (priority 6)` | PASS |
+| host_listener | ALLOW | `ss -tlnp` | listening on 0.0.0.0:443 |
+
+## abstentions
+
+_no layer abstained._
+
+## notes
+
+- return direction uses any destination port for TCP/UDP (client ephemeral port unknown)

@@ -1,0 +1,27 @@
+flow: 10.0.1.10/32 -> 10.12.2.30/32 tcp/443
+verdict: BLOCKED at nacl
+
+blocking layer — nacl:
+  [DENY ] nacl
+         cited: acl-0123456789abcdef0  no ingress rule allows tcp/443 from 10.0.1.10
+
+cleared layers:
+  [ALLOW] route
+         cited: rtb-0aaa1111bbbb222200  route: 10.1.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222201  route: 10.2.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222202  route: 10.3.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222203  route: 10.4.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222204  route: 10.5.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222205  route: 10.6.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222206  route: 10.7.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222207  route: 10.8.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222208  route: 10.9.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222209  route: 10.10.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222210  route: 10.11.0.0/16 -> tgw-0abc1234def567890
+         cited: rtb-0aaa1111bbbb222211  route: 10.12.0.0/16 -> tgw-0abc1234def567890
+  [ALLOW] firewall
+         cited: nfr-allow-east-west sid 3 (priority 6)  PASS
+         cited: nfr-inspect-egress sid 11 (priority 20)  PASS
+
+abstentions:
+  (no layer abstained)

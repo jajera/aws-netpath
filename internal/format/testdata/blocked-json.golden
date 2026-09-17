@@ -1,0 +1,83 @@
+{
+  "kind": "diagnosis",
+  "flow": "10.0.1.10/32 -> 10.1.2.30/32 tcp/443",
+  "outcome": "BLOCKED at host_firewall",
+  "source": "10.0.1.10 (eni-0123456789abcdef0) in subnet-0123456789abcdef0",
+  "destination": "10.1.2.30 (eni-0abcdef123456789a) in subnet-0abcdef123456789a",
+  "symptom": "timeout",
+  "host": "i-0abcdef123456789a (probed)",
+  "finding": {
+    "title": "blocking layer — host_firewall",
+    "rows": [
+      {
+        "layer": "host_firewall",
+        "verdict": "DENY"
+      },
+      {
+        "subject": "firewall-cmd --zone=public --list-rich-rules",
+        "detail": "zone public allows 10.0.2.0/24 and 10.0.3.0/24; source 10.0.1.10 is in neither"
+      }
+    ]
+  },
+  "cleared": {
+    "title": "cleared layers",
+    "rows": [
+      {
+        "layer": "resolution",
+        "verdict": "ALLOW"
+      },
+      {
+        "subject": "eni-0123456789abcdef0",
+        "detail": "source 10.0.1.10 resolved to i-0123456789abcdef0 in subnet-0123456789abcdef0"
+      },
+      {
+        "layer": "route",
+        "verdict": "ALLOW"
+      },
+      {
+        "subject": "rtb-0aaa1111bbbb2222c",
+        "detail": "route: 10.1.0.0/16 -> tgw-0abc1234def567890"
+      },
+      {
+        "layer": "nacl",
+        "verdict": "ALLOW"
+      },
+      {
+        "subject": "acl-0123456789abcdef0",
+        "detail": "egress rule 100 allows tcp/443"
+      },
+      {
+        "layer": "security_group",
+        "verdict": "ALLOW"
+      },
+      {
+        "subject": "sg-0123456789abcdef0",
+        "detail": "egress rule allows tcp/443 to 10.1.0.0/16"
+      },
+      {
+        "layer": "firewall",
+        "verdict": "ALLOW"
+      },
+      {
+        "subject": "nfr-allow-east-west sid 3 (priority 6)",
+        "detail": "PASS"
+      },
+      {
+        "layer": "host_listener",
+        "verdict": "ALLOW"
+      },
+      {
+        "subject": "ss -tlnp",
+        "detail": "listening on 0.0.0.0:443"
+      }
+    ]
+  },
+  "unresolved": {
+    "title": "abstentions",
+    "note": "no layer abstained"
+  },
+  "authoritative": true,
+  "notes": [
+    "return direction uses any destination port for TCP/UDP (client ephemeral port unknown)"
+  ]
+}

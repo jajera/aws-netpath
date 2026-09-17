@@ -1,0 +1,17 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Go Check on Save",
+      "description": "Runs gofmt, go vet, and golangci-lint against the saved file's package only, so a save stays fast. v1 does not substitute ${file}, so the script resolves its target from the STDIN payload and falls back to the git-dirty set. Advisory: reports findings without failing the save.",
+      "trigger": "PostFileSave",
+      "matcher": "\\.go$",
+      "action": {
+        "type": "command",
+        "command": "bash .kiro/hooks/go-check.sh",
+        "timeout": 60
+      },
+      "enabled": true
+    }
+  ]
+}

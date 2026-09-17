@@ -1,0 +1,27 @@
+---
+name: Go Test
+
+on:
+  pull_request: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  statuses: write
+
+jobs:
+  # verbose is off deliberately: this suite is large, and -v output buries the
+  # failing assertion in thousands of passing lines. The reusable already writes
+  # a coverage summary to the step summary and uploads coverage.out as an
+  # artefact, so nothing is lost by keeping the log readable.
+  go-test:
+    uses: actionsforge/actions-go-test/.github/workflows/go-test.yml@v0.0.9
+    with:
+      go-version: stable
+      coverage: true
+      race: true
+      verbose: false
+      timeout: 10m

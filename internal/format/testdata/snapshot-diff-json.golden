@@ -1,0 +1,60 @@
+{
+  "kind": "snapshot_diff",
+  "outcome": "CHANGED: 1 added, 1 removed, 1 modified",
+  "subjects": [
+    "before snapshot: captured 2025-03-01T09:00:00Z, schema version 1, 4 resources",
+    "after snapshot: captured 2025-03-08T09:00:00Z, schema version 2, 4 resources"
+  ],
+  "finding": {
+    "title": "changes",
+    "rows": [
+      {
+        "layer": "vpc — 444455556666 / us-east-1",
+        "verdict": "MODIFIED"
+      },
+      {
+        "subject": "vpc-0ddd3333eeee4444f",
+        "detail": "cidrs changed: [\"10.1.0.0/16\"] → [\"10.1.0.0/16\",\"10.2.0.0/16\"]"
+      },
+      {
+        "layer": "subnet — 111122223333 / us-west-2",
+        "verdict": "ADDED"
+      },
+      {
+        "subject": "subnet-0fedcba9876543210",
+        "detail": "added, name app-b"
+      },
+      {
+        "layer": "security_group — 111122223333 / us-west-2",
+        "verdict": "REMOVED"
+      },
+      {
+        "subject": "sg-0111111111111111a",
+        "detail": "removed, name app-sg"
+      }
+    ],
+    "note": "grouped by resource type, account, and region; 1 added, 1 removed, 1 modified"
+  },
+  "cleared": {
+    "title": "unchanged",
+    "rows": [
+      {
+        "layer": "vpc — 111122223333 / us-west-2 (1)",
+        "verdict": "SAME"
+      }
+    ],
+    "note": "2 resources are identical in both snapshots; a diff reports changes only"
+  },
+  "unresolved": {
+    "title": "incomplete comparisons",
+    "rows": [
+      {
+        "layer": "schema version",
+        "verdict": "INCOMPLETE",
+        "detail": "the before snapshot was written at schema version 1 and the after snapshot at version 2, so this comparison may be incomplete: a field one version records and the other does not cannot be told apart from a field that changed"
+      }
+    ]
+  },
+  "authoritative": false,
+  "notice": "this comparison may be incomplete: schema version"
+}
