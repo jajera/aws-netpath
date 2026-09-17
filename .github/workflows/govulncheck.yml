@@ -11,8 +11,15 @@ on:
   schedule:
     - cron: '17 4 * * 1'
 
+# A scanner needs write scopes because the reusable reports findings back onto
+# the pull request as a check run and a commit status. A called workflow is
+# capped by what the caller grants, so granting less does not merely reduce what
+# it can report: it makes this file invalid and the job never runs.
 permissions:
   contents: read
+  pull-requests: write
+  checks: write
+  statuses: write
 
 jobs:
   govulncheck:
