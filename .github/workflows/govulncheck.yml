@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   govulncheck:
-    uses: actionsforge/actions-govulncheck/.github/workflows/govulncheck.yml@v0.0.10
+    uses: actionsforge/actions-govulncheck/.github/workflows/govulncheck.yml@v0.0.11
     with:
       go-version: stable
       mode: source
