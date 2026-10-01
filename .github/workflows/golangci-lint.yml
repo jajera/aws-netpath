@@ -17,6 +17,6 @@ jobs:
   # tracked at the repository root. Local `golangci-lint run` and this job
   # therefore read the same configuration.
   golangci-lint:
-    uses: actionsforge/actions-golangci-lint/.github/workflows/golangci-lint.yml@v0.0.11
+    uses: actionsforge/actions-golangci-lint/.github/workflows/golangci-lint.yml@v0.0.12
     with:
       go-version: stable
